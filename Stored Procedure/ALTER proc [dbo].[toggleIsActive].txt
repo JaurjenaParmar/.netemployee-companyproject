@@ -1,0 +1,15 @@
+ALTER proc [dbo].[toggleIsActive]
+@id int
+as
+begin
+declare @isactive varchar(1)
+select @isactive=isactive from department where id=@id;
+
+update department set isActive=
+case @isactive
+when 'N' then 'Y'
+when 'Y' then 'N' end
+where id=@id
+
+
+end

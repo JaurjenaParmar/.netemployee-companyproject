@@ -1,0 +1,94 @@
+﻿@model TestList.Models.department
+@using TestList.Models
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>department</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.department_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.department_name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.department_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.isActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.isActive, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.isActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+        
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+
+            </tr>
+        </thead>
+        @foreach (var item in Model.dept_list)
+        {
+            <tbody>
+                <tr>
+                    <th scope="row">@item.id</th>
+                    <td>@item.department_name</td>
+                    <td>
+                        @if (item.isActive.Equals("Y"))
+                        {
+                            @*<a href="@Url.Action("detail", "Home", new {id=item.id})" class="custom-link">go to detail*@
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" 
+                                           checked onclick="location.href='@Url.Action("detail", "Home", new {id=item.id})'" />
+                                    <label class="form-check-label" for=@item.id>enabled</label>
+                                </div>
+                            @*</a>*@
+
+                           
+
+                        }
+                        else
+                        {
+
+                    <a href="@Url.Action("detail", "Home", new {id=item.id})" class="custom-link">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id=@item.id />
+                            <label class="form-check-label" for=@item.id>Disabled</label>
+                        </div>
+                    </a>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
